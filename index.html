@@ -4,7 +4,7 @@
       <meta charset="utf-8">
    </head>   
    <body> 
-	  <center>
+      <center>
       <table>
          <tr>
             <td><canvas id="canvas-id"></canvas></td>
@@ -17,26 +17,26 @@
       </center>
       <script src="https://rawgit.com/Mikhus/canvas-gauges/master/gauge.min.js"></script>
       <script type = "text/javascript">
-         var ws = new WebSocket("ws://192.168.1.104:8880/");
-		 var ttem, thum;
-         ws.onopen = function() {                  
+        var ws = new WebSocket("ws://ipserver:port/");
+	var ttem, thum;
+        ws.onopen = function() {                  
             //ws.send("PING!");
             console.log("Websocket ready!");
-         };          
-         ws.onmessage = function (evt) { 
-            var d = evt.data;
-			var msgArray = JSON.parse(d)
-			var tem = msgArray.temperature;
-			var hum = msgArray.humidity;
-            console.log("Message is received... [" + d + "]");      
-			if (ttem != tem){
-				ttem = tem;
-				gauge.value = ttem;
-			}
-			if (thum != hum | hum == 0){
-				thum = hum;
-				document.getElementById('valUpdate').innerHTML = thum;
-            }
+        };          
+        ws.onmessage = function (evt) { 
+        	var d = evt.data;
+		var msgArray = JSON.parse(d)
+		var tem = msgArray.temperature;
+		var hum = msgArray.humidity;
+        	console.log("Message is received... [" + d + "]");      
+		if (ttem != tem){
+			ttem = tem;
+			gauge.value = ttem;
+		}
+		if (thum != hum | hum == 0){
+			thum = hum;
+			document.getElementById('valUpdate').innerHTML = thum;
+            	}
          };          
          ws.onclose = function() {                   
             console.log("Connection is closed..."); 
