@@ -1,0 +1,19 @@
+{
+  "name": "dht11",
+  "version": "0.0.0",
+  "description": "dht11 server serial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {},
+  "author": "bangjii",
+  "license": "ISC",
+  "dependencies": {
+    "node-dht-sensor": "^0.4.0",
+    "pigpio": "^2.0.1",
+    "express": "^4.16.3",
+    "ws": "^7.2.0"
+  },
+  "devDependencies": {}
+}

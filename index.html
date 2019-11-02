@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta charset="utf-8">
+   </head>   
+   <body> 
+	  <center>
+      <table>
+         <tr>
+            <td><canvas id="canvas-id"></canvas></td>
+			<td>
+				Humidity:
+				<h1 id="valUpdate" style="font-size: 115px;">0</h1>
+			</td>
+         </tr>
+      </table>
+      </center>
+      <script src="https://rawgit.com/Mikhus/canvas-gauges/master/gauge.min.js"></script>
+      <script type = "text/javascript">
+         var ws = new WebSocket("ws://192.168.1.104:8880/");
+		 var ttem, thum;
+         ws.onopen = function() {                  
+            //ws.send("PING!");
+            console.log("Websocket ready!");
+         };          
+         ws.onmessage = function (evt) { 
+            var d = evt.data;
+			var msgArray = JSON.parse(d)
+			var tem = msgArray.temperature;
+			var hum = msgArray.humidity;
+            console.log("Message is received... [" + d + "]");      
+			if (ttem != tem){
+				ttem = tem;
+				gauge.value = ttem;
+			}
+			if (thum != hum | hum == 0){
+				thum = hum;
+				document.getElementById('valUpdate').innerHTML = thum;
+            }
+         };          
+         ws.onclose = function() {                   
+            console.log("Connection is closed..."); 
+         };
+         var gauge = new LinearGauge({
+             renderTo: 'canvas-id',
+             width: 120,
+             height: 400,
+             units: "°C",
+             minValue: -10,
+             startAngle: 90,
+             ticksAngle: 180,
+             valueBox: true,
+             maxValue: 100,
+             majorTicks: [
+				 "-10",
+                 "0",
+                 "10",
+                 "20",
+                 "30",
+                 "40",
+                 "50",
+                 "60",
+                 "70",
+                 "80",
+                 "90",
+                 "100"
+             ],
+             minorTicks: 2,
+             strokeTicks: true,
+             highlights: [
+                 {
+                     "from": 40,
+                     "to": 100,
+                     "color": "rgba(200, 50, 50, .75)"
+                 }
+             ],
+             colorPlate: "#fff",
+             borderShadowWidth: 0,
+             borders: false,
+             needleType: "arrow",
+             needleWidth: 2,
+             needleCircleSize: 7,
+             needleCircleOuter: true,
+             needleCircleInner: false,
+             animationDuration: 1500,
+             animationRule: "linear",
+             barWidth: 10,
+             value: 30
+         });
+         gauge.draw();
+      </script>    
+   </body>
+</html>
